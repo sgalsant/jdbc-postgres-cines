@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  database:
+    image: postgres:16.2-alpine3.19
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: alumno
+      POSTGRES_PASSWORD: alumno
+    volumes:
+      - database-disk:/var/lib/postgresql/data
+      - ./initdb.d:/docker-entrypoint-initdb.d
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+  
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: alumno@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: alumno
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin-disk:/var/lib/pgadmin
+
+volumes:
+  database-disk:
+  pgadmin-disk:
+
